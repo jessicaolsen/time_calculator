@@ -62,6 +62,10 @@ def add_time(start, duration, days = None):
     # Converting to time format for return
     if new_am_pm == 'PM' : 
         new_hours = new_hours - 12
+        if new_hours == 0 : 
+          new_hours = 12
+    elif new_hours == 0 : 
+        new_hours = 12
 
     #Determining the Day of the week if one is provided
     days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -71,13 +75,23 @@ def add_time(start, duration, days = None):
         index_day = days_of_week.index(cap_week)
         pull_day = index_day + day_count 
         if pull_day <= 6 :
-            final_day = days_of_week[pull_day] + ' '
+            final_day = ', ' + days_of_week[pull_day]
+        else : 
+            pull_day = pull_day % 7
+            pull_day = math.floor(pull_day)
+            final_day = ', ' + days_of_week[pull_day]
     else : 
-        final_day =  ' '
+        final_day =  ''
 
-    new_time = str(new_hours) + ':' + new_minutes + ' ' + new_am_pm + ' ' + final_day + str(day)
+    if bool(final_day) == True : 
+      if bool(day) == True : 
+        new_time = str(new_hours) + ':' + new_minutes + ' ' + new_am_pm + final_day + ' ' + str(day)
+      else : 
+        new_time = str(new_hours) + ':' + new_minutes + ' ' + new_am_pm + final_day
+    else : 
+      new_time = str(new_hours) + ':' + new_minutes + ' ' + new_am_pm + ' ' + str(day)
+    
+    return new_time.rstrip()
 
-    return new_time
 
-
-print(add_time("11:30 AM", "2:32", 'Monday'))
+print(add_time("8:16 PM", "466:02", 'tuesday'))
